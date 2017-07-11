@@ -1,4 +1,4 @@
-package com.koursystems.delivery.urtrackerapp;
+package com.projects.uriel.urtrackerapp;
 
 import org.junit.Test;
 
