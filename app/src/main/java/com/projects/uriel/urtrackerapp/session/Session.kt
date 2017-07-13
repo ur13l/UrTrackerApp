@@ -28,7 +28,7 @@ class Session() {
             val gson = Gson()
             val jsonUser = prefs!!.getString(SESSION, null)
             if (jsonUser != null) {
-                user = gson.fromJson<User>(jsonUser,object:TypeToken<User>(){}.type)
+                user = gson.fromJson<User>(jsonUser, User::class.java)
             } else {
                 user = User()
             }

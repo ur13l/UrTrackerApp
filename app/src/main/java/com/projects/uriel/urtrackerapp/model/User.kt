@@ -5,10 +5,10 @@ package com.projects.uriel.urtrackerapp.model
  */
 
 class User {
-    var _id : Int? = null
+    var _id : String? = null
     var name : String? = null
-    var email : Int? = null
-    var apiToken : Int? = null
+    var email : String? = null
+    var apiToken : String? = null
     var travels : List<Travel>? = null
 
 }
