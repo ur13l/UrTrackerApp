@@ -4,4 +4,9 @@
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="sign_in">sign in</string>
+    <string name="request_error">oops! there was a communication error with the server</string>
+    <string name="register"><u>don\'t have an account?</u></string>
+    <string name="forgot_password"><u>forgot password?</u></string>
+    <string name="sign_up">sign up</string>
+    <string name="login">already have an account?</string>
 </resources>

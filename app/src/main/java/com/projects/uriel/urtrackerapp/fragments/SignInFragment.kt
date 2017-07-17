@@ -3,7 +3,6 @@ package com.projects.uriel.urtrackerapp.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,7 @@ import com.projects.uriel.urtrackerapp.R
 import android.graphics.Typeface
 import android.support.design.widget.Snackbar
 import android.text.InputType
-import android.support.v4.widget.SearchViewCompat.setInputType
-import android.util.Log
+import android.widget.TextView
 import com.projects.uriel.urtrackerapp.activities.MainActivity
 import com.projects.uriel.urtrackerapp.api.Response
 import com.projects.uriel.urtrackerapp.api.UserApi
@@ -36,6 +34,8 @@ class SignInFragment : BaseFragment(){
     private var etEmail : EditText? = null
     private var etPassword : EditText? = null
     private var btnSignIn : Button? = null
+    private var tvForgotPassword : TextView? = null
+    private var tvRegister : TextView? = null
 
     /**
      * Method executed when the fragment is loaded
@@ -53,7 +53,14 @@ class SignInFragment : BaseFragment(){
         val view : View = inflater!!.inflate(R.layout.fragment_sign_in, container, false)
         defineViews(view)
 
+        //Input type configuration for etPassword
+        etPassword!!.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        etPassword!!.setTypeface(Typeface.DEFAULT)
+
+        //Setting up listeners in elements
         btnSignIn!!.setOnClickListener { view -> signIn() }
+        tvForgotPassword!!.setOnClickListener { view -> forgotPassword() }
+        tvRegister!!.setOnClickListener { view -> register() }
 
         return view
     }
@@ -66,10 +73,13 @@ class SignInFragment : BaseFragment(){
         etEmail = view.findViewById(R.id.et_email) as EditText
         etPassword = view.findViewById(R.id.et_password) as EditText
         btnSignIn = view.findViewById(R.id.btn_sign_in) as Button
+        tvForgotPassword = view.findViewById(R.id.tv_forgot_password) as TextView
+        tvRegister = view.findViewById(R.id.tv_register) as TextView
 
-        //Input type configuration for etPassword
-        etPassword!!.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-        etPassword!!.setTypeface(Typeface.DEFAULT)
+    }
+
+    fun forgotPassword() {
+
     }
 
 
@@ -80,14 +90,13 @@ class SignInFragment : BaseFragment(){
         var call : Call<Response<User>> = userApi!!.login(etEmail!!.text.toString(), etPassword!!.text.toString())
         call.enqueue(object : Callback<Response<User>> {
             override fun onFailure(call: Call<Response<User>>?, t: Throwable?) {
-                Snackbar.make(btnSignIn as View, "Hubo un error al procesar la petición", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(btnSignIn as View, R.string.request_error, Snackbar.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<Response<User>>?, response: retrofit2.Response<Response<User>>?) {
                 if (response!!.body() != null) {
                     var user = response!!.body().data
                     Session.loadSession(user!!)
-                    Snackbar.make(btnSignIn as View, "Bienvenido " + user!!.name, Snackbar.LENGTH_LONG).show()
                     val intent = Intent(activity as Context, MainActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     activity.startActivity(intent)
@@ -96,5 +105,11 @@ class SignInFragment : BaseFragment(){
             }
 
         })
+    }
+
+    fun register() {
+        val ft = fragmentManager.beginTransaction()
+        val signUpFragment = SignUpFragment()
+        ft.replace(R.id.fragment_container,signUpFragment).commit()
     }
 }
